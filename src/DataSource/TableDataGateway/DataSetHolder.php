@@ -19,7 +19,9 @@ class DataSetHolder
         $this->connection = $connection;
     }
 
-    public function fillData(string $query, string $tableName)
+    public function fillData(string $query, string $tableName, array $params = [])
     {
+        $recordSet = $this->connection->prepare($query)->executeQuery($params);
+        $this->data[$tableName] = $recordSet->getRows();
     }
 }

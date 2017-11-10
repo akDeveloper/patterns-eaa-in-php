@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace BasePatterns\RecordSet;
 
+use Traversable;
+
 class RecordSet
 {
     private $rows = [];
@@ -19,7 +21,7 @@ class RecordSet
     {
         if (empty($this->rows)) {
             foreach ($this->traversable as $row) {
-                $this->rows[] = $row;
+                $this->rows[] = new DataRow($row);
             }
         }
 
