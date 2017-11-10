@@ -34,6 +34,21 @@ class DataGatewayTest extends TestCase
         $data = $personGateway->getData();
 
         $this->assertEquals(2, count($data));
+
+        $first = reset($data);
+        $this->assertInstanceOf(DataRow::class, $first);
+    }
+
+    public function testShouldUpdateRecord()
+    {
+        $recordSet = $this->getUpdateRecord();
+        $personGateway = new PersonGateway($this->getMockConnection($recordSet));
+        $personGateway->loadWhere('`id` = ?', [1]);
+
+        $personGateway[1]->numberOfDependents = 10;
+        $personGateway[1]->lastName = 'Bob';
+
+        $personGateway->update();
     }
 
     private function getMockConnection(RecordSet $expectedResults): Connection
@@ -72,6 +87,14 @@ class DataGatewayTest extends TestCase
         });
 
         return new RecordSet(new ArrayIterator($data));
+    }
+
+    private function getUpdateRecord(): RecordSet
+    {
+        $data = $this->getData();
+        $row = reset($data);
+
+        return new RecordSet(new ArrayIterator([$row]));
     }
 
     private function getData(): array

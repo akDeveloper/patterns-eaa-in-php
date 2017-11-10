@@ -4,11 +4,14 @@ declare(strict_types = 1);
 
 namespace DataSource\TableDataGateway;
 
-use Infrastructure\DataBase\Connection;
+use Infrastructure\Database\Connection;
 
 class DataSetHolder
 {
-    public $data = [];
+    /**
+     * @var \Infrastructure\Database\DataSet
+     */
+    public $data;
 
     private $dataAdapters = [];
 
@@ -21,7 +24,18 @@ class DataSetHolder
 
     public function fillData(string $query, string $tableName, array $params = [])
     {
-        $recordSet = $this->connection->prepare($query)->executeQuery($params);
-        $this->data[$tableName] = $recordSet->getRows();
+        if (array_key_exists($tableName, $this->dataAdapters)) {
+            throw new MultipleLoadException();
+        }
+        $da = new DbDataAdapter($query, $this->connection);
+        $da->fill($this->data, $tableName);
+        $this->dataAdapters[$tableName] = $da;
+    }
+
+    public function update(): void
+    {
+        foreach ($this->dataAdapters as $table => $da) {
+            $da->update($this->data, $table);
+        }
     }
 }
