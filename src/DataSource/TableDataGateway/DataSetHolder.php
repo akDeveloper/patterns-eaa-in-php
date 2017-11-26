@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace DataSource\TableDataGateway;
 
+use BasePatterns\RecordSet\RecordSet;
 use Infrastructure\Database\Connection;
+use Infrastructure\Database\DbDataAdapter;
 
 class DataSetHolder
 {
@@ -20,6 +22,7 @@ class DataSetHolder
     public function __construct(Connection $connection)
     {
         $this->connection = $connection;
+        $this->data = new RecordSet();
     }
 
     public function fillData(string $query, string $tableName, array $params = [])

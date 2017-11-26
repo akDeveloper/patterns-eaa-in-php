@@ -6,7 +6,7 @@ namespace BasePatterns\RecordSet;
 
 use InvalidArgumentException;
 
-class DataRow
+class Row
 {
     private $row;
 

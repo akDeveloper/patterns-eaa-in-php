@@ -12,12 +12,13 @@ class RecordSetTest extends TestCase
 {
     public function testShouldCreateDataRows()
     {
-        $recordSet = new RecordSet($this->getTraversable());
+        $recordSet = new RecordSet();
 
-        $rows = $recordSet->getRows();
+        $recordSet->load($this->getTraversable(), 'persons');
+        $rows = $recordSet->getTable('persons')->getRows();
 
         $this->assertEquals(3, count($rows));
-        $this->assertInstanceOf(DataRow::class, $rows[0]);
+        $this->assertInstanceOf(Row::class, $rows[0]);
     }
 
     public function getTraversable(): Traversable

@@ -4,27 +4,33 @@ declare(strict_types = 1);
 
 namespace BasePatterns\RecordSet;
 
+use Countable;
 use Traversable;
 
-class RecordSet
+class RecordSet implements Countable
 {
-    private $rows = [];
+    private $tables = [];
 
-    private $traversable;
+    private $count = 0;
 
-    public function __construct(Traversable $traversable)
+    public function getTable(string $tableName): Table
     {
-        $this->traversable = $traversable;
+        return $this->tables[$tableName];
     }
 
-    public function getRows(): array
+    public function load(Traversable $traversable, string $tableName)
     {
-        if (empty($this->rows)) {
-            foreach ($this->traversable as $row) {
-                $this->rows[] = new DataRow($row);
-            }
+        $this->tables[$tableName] = new Table($tableName);
+        $rows = [];
+        foreach ($traversable as $row) {
+            $rows[] = new Row($row);
         }
+        $this->tables[$tableName]->load($rows);
+        $this->count += count($rows);
+    }
 
-        return $this->rows;
+    public function count(): int
+    {
+        return $this->count;
     }
 }

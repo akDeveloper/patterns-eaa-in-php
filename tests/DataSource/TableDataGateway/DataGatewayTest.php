@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace DataSource\TableDataGateway;
 
+use Traversable;
 use ArrayIterator;
 use PHPUnit\Framework\TestCase;
-use BasePatterns\RecordSet\DataRow;
-use BasePatterns\RecordSet\RecordSet;
+use BasePatterns\RecordSet\Row;
 use Infrastructure\Database\Connection;
 use Infrastructure\Database\PreparedStatement;
 
@@ -21,7 +21,7 @@ class DataGatewayTest extends TestCase
 
         $dataRow = $personGateway[2];
 
-        $this->assertInstanceOf(DataRow::class, $dataRow);
+        $this->assertInstanceOf(Row::class, $dataRow);
         $this->assertEquals('Jane', $dataRow->firstName);
     }
 
@@ -33,25 +33,13 @@ class DataGatewayTest extends TestCase
 
         $data = $personGateway->getData();
 
-        $this->assertEquals(2, count($data));
+        $this->assertEquals(2, $data->count());
 
-        $first = reset($data);
-        $this->assertInstanceOf(DataRow::class, $first);
+        $first = $personGateway[1];
+        $this->assertInstanceOf(Row::class, $first);
     }
 
-    public function testShouldUpdateRecord()
-    {
-        $recordSet = $this->getUpdateRecord();
-        $personGateway = new PersonGateway($this->getMockConnection($recordSet));
-        $personGateway->loadWhere('`id` = ?', [1]);
-
-        $personGateway[1]->numberOfDependents = 10;
-        $personGateway[1]->lastName = 'Bob';
-
-        $personGateway->update();
-    }
-
-    private function getMockConnection(RecordSet $expectedResults): Connection
+    private function getMockConnection(Traversable $expectedResults): Connection
     {
         $connection = $this->getMockBuilder(Connection::class)
             ->setMethods(['prepare'])
@@ -63,7 +51,7 @@ class DataGatewayTest extends TestCase
         return $connection;
     }
 
-    private function getMockPreparedStatement(RecordSet $expectedResults): PreparedStatement
+    private function getMockPreparedStatement(Traversable $expectedResults): PreparedStatement
     {
         $preparedStatement = $this->getMockBuilder(PreparedStatement::class)
             ->setMethods(['bindValue', 'executeQuery'])
@@ -75,26 +63,26 @@ class DataGatewayTest extends TestCase
         return $preparedStatement;
     }
 
-    private function getLoadAllRecordSet(): RecordSet
+    private function getLoadAllRecordSet(): Traversable
     {
-        return new RecordSet(new ArrayIterator($this->getData()));
+        return new ArrayIterator($this->getData());
     }
 
-    private function getLoadWhereRecordSet(): RecordSet
+    private function getLoadWhereRecordSet(): Traversable
     {
         $data = array_filter($this->getData(), function ($row) {
             return $row['lastName'] === 'Doe';
         });
 
-        return new RecordSet(new ArrayIterator($data));
+        return new ArrayIterator($data);
     }
 
-    private function getUpdateRecord(): RecordSet
+    private function getUpdateRecord(): Traversable
     {
         $data = $this->getData();
         $row = reset($data);
 
-        return new RecordSet(new ArrayIterator([$row]));
+        return new ArrayIterator([$row]);
     }
 
     private function getData(): array

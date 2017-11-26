@@ -5,8 +5,9 @@ declare(strict_types = 1);
 namespace DataSource\TableDataGateway;
 
 use ArrayAccess;
-use BasePatterns\RecordSet\DataRow;
-use Infrastructure\DataBase\DataTable;
+use BasePatterns\RecordSet\Row;
+use BasePatterns\RecordSet\Table;
+use BasePatterns\RecordSet\RecordSet;
 use Infrastructure\DataBase\Connection;
 
 abstract class DataGateway implements ArrayAccess
@@ -23,12 +24,12 @@ abstract class DataGateway implements ArrayAccess
         $this->holder = new DataSetHolder($connection);
     }
 
-    public function getData(): array
+    public function getData(): RecordSet
     {
-        return $this->holder->data[$this->getTableName()];
+        return $this->holder->data;
     }
 
-    public function getTable(): DataTable
+    public function getTable(): Table
     {
         return $this->getData()->getTable($this->getTableName());
     }
@@ -57,9 +58,9 @@ abstract class DataGateway implements ArrayAccess
 
     public function offsetGet($offset)
     {
-        $this->checkTableExists();
-        $rows = $this->holder->data[$this->getTableName()];
-        $hit = array_filter($rows, function (DataRow $row) use ($offset) {
+        #$this->checkTableExists();
+        $rows = $this->getTable($this->getTableName())->getRows();
+        $hit = array_filter($rows, function (Row $row) use ($offset) {
             return $row->id == $offset;
         });
 
