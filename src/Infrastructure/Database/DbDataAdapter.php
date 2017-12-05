@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Infrastructure\DataBase;
 
+use BasePatterns\RecordSet\Row;
 use BasePatterns\RecordSet\RecordSet;
 
 class DbDataAdapter
@@ -21,9 +22,7 @@ class DbDataAdapter
     public function update(RecordSet $data, string $tableName): int
     {
         foreach ($data->getTable($tableName)->getRows() as $row) {
-            if ($row->hasChanges()) {
-                $this->updateRowChanges($row->getChanges());
-            }
+            $this->updateRow($row);
         }
 
         return 0;
@@ -40,7 +39,12 @@ class DbDataAdapter
         return $data->count();
     }
 
-    private function updateRowChanges(array $changes)
+    private function updateRow(Row $row): void
     {
+        if (!$row->hasChanges()) {
+            return;
+        }
+
+        $changes = $row->getChanges();
     }
 }
