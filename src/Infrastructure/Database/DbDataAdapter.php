@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Infrastructure\DataBase;
+namespace Infrastructure\Database;
 
 use BasePatterns\RecordSet\Row;
 use BasePatterns\RecordSet\RecordSet;

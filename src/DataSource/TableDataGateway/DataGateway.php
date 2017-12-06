@@ -8,7 +8,7 @@ use ArrayAccess;
 use BasePatterns\RecordSet\Row;
 use BasePatterns\RecordSet\Table;
 use BasePatterns\RecordSet\RecordSet;
-use Infrastructure\DataBase\Connection;
+use Infrastructure\Database\Connection;
 
 abstract class DataGateway implements ArrayAccess
 {
@@ -58,7 +58,7 @@ abstract class DataGateway implements ArrayAccess
 
     public function offsetGet($offset)
     {
-        $rows = $this->getTable($this->getTableName())->getRows();
+        $rows = $this->getTable()->getRows();
         $hit = array_filter($rows, function (Row $row) use ($offset) {
             return $row->id == $offset;
         });

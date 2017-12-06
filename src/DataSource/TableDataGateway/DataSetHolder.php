@@ -11,7 +11,7 @@ use Infrastructure\Database\DbDataAdapter;
 class DataSetHolder
 {
     /**
-     * @var \Infrastructure\Database\DataSet
+     * @var \BasePatterns\RecordSet\RecordSet
      */
     public $data;
 
