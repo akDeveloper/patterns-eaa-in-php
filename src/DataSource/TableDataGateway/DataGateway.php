@@ -58,7 +58,6 @@ abstract class DataGateway implements ArrayAccess
 
     public function offsetGet($offset)
     {
-        #$this->checkTableExists();
         $rows = $this->getTable($this->getTableName())->getRows();
         $hit = array_filter($rows, function (Row $row) use ($offset) {
             return $row->id == $offset;
@@ -75,12 +74,5 @@ abstract class DataGateway implements ArrayAccess
     public function offsetUnset($offset): void
     {
         false;
-    }
-
-    private function checkTableExists()
-    {
-        if (!array_key_exists($this->getTableName(), $this->holder->data)) {
-            throw new NoTableFoundException(sprintf('Table for `%s` is not yet loaded', get_class($this)));
-        }
     }
 }

@@ -6,8 +6,9 @@ namespace Infrastructure\DataBase;
 
 use BasePatterns\RecordSet\Row;
 use BasePatterns\RecordSet\RecordSet;
+use DataSource\TableDataGateway\DataAdapter;
 
-class DbDataAdapter
+class DbDataAdapter implements DataAdapter
 {
     private $query;
 

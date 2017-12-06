@@ -15,10 +15,14 @@ class RecordSet implements Countable
 
     public function getTable(string $tableName): Table
     {
+        if (array_key_exists($tableName, $this->tables) == false) {
+            throw new NoTableFoundException($tableName);
+        }
+
         return $this->tables[$tableName];
     }
 
-    public function load(Traversable $traversable, string $tableName)
+    public function load(Traversable $traversable, string $tableName): void
     {
         $this->tables[$tableName] = new Table($tableName);
         $rows = [];
