@@ -23,7 +23,7 @@ class DbDataAdapter implements DataAdapter
     public function update(RecordSet $data, string $tableName): int
     {
         foreach ($data->getTable($tableName)->getRows() as $row) {
-            $this->updateRow($row);
+            $this->updateRow($tableName, $row);
         }
 
         return 0;
@@ -40,12 +40,31 @@ class DbDataAdapter implements DataAdapter
         return $data->count();
     }
 
-    private function updateRow(Row $row): void
+    private function updateRow(string $tableName, Row $row): void
     {
         if (!$row->hasChanges()) {
             return;
         }
 
-        $changes = $row->getChanges();
+        list($sqlCommand, $binds) = $this->createSqlQuery($tableName, $row->getChanges());
+
+        $this->connection
+            ->prepare($sqlCommand)
+            ->execute($binds);
+    }
+
+    private function createSqlQuery(string $tableName, array $changes)
+    {
+        $sqlArray = [];
+        $binds = [];
+        foreach ($changes as $field => $value) {
+            $sqlArray[] = sprintf("`%s`.%s = ?", $tableName, $field);
+            $binds[] = $value;
+        }
+
+        return [
+            sprintf('UPDATE `%s` SET %s', $tableName, implode(', ', $sqlArray)),
+            $binds
+        ];
     }
 }

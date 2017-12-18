@@ -13,6 +13,10 @@ use Infrastructure\Database\PreparedStatement;
 
 class DataGatewayTest extends TestCase
 {
+    private $connection;
+
+    private $statement;
+
     public function testShouldLoadAll()
     {
         $expectedRecordSet = $this->getLoadAllRecordSet();
@@ -39,22 +43,41 @@ class DataGatewayTest extends TestCase
         $this->assertInstanceOf(Row::class, $first);
     }
 
+    public function testShouldUpdateData()
+    {
+        $expectedRecordSet = $this->getUpdateRecord();
+        $personGateway = new PersonGateway($this->getMockConnection($expectedRecordSet));
+
+        $this->statement
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->equalTo([10]));
+
+        $personGateway->loadWhere("`id` = ?", [1]);
+        $person = $personGateway[1];
+        $person->numberOfDependents = 10;
+
+        $personGateway->update();
+    }
+
     private function getMockConnection(Traversable $expectedResults): Connection
     {
-        $connection = $this->getMockBuilder(Connection::class)
+        $this->connection = $this->getMockBuilder(Connection::class)
             ->setMethods(['prepare'])
             ->getMock();
 
-        $connection->method('prepare')
-            ->willReturn($this->getMockPreparedStatement($expectedResults));
+        $this->statement = $this->getMockPreparedStatement($expectedResults);
+        $this->connection
+            ->method('prepare')
+            ->willReturn($this->statement);
 
-        return $connection;
+        return $this->connection;
     }
 
     private function getMockPreparedStatement(Traversable $expectedResults): PreparedStatement
     {
         $preparedStatement = $this->getMockBuilder(PreparedStatement::class)
-            ->setMethods(['bindValue', 'executeQuery'])
+            ->setMethods(['bindValue', 'executeQuery', 'execute'])
             ->getMock();
 
         $preparedStatement->method('executeQuery')
