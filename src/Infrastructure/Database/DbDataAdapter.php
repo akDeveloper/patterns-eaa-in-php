@@ -46,14 +46,14 @@ class DbDataAdapter implements DataAdapter
             return;
         }
 
-        list($sqlCommand, $binds) = $this->createSqlQuery($tableName, $row->getChanges());
+        list($sqlCommand, $binds) = $this->createSqlForUpdate($tableName, $row->getChanges());
 
         $this->connection
             ->prepare($sqlCommand)
             ->execute($binds);
     }
 
-    private function createSqlQuery(string $tableName, array $changes)
+    private function createSqlForUpdate(string $tableName, array $changes)
     {
         $sqlArray = [];
         $binds = [];

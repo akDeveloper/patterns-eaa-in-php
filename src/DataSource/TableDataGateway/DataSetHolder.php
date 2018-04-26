@@ -25,8 +25,11 @@ class DataSetHolder
         $this->data = new RecordSet();
     }
 
-    public function fillData(string $query, string $tableName, array $params = [])
-    {
+    public function fillData(
+        string $query,
+        string $tableName,
+        array $params = []
+    ): void {
         if (array_key_exists($tableName, $this->dataAdapters)) {
             throw new MultipleLoadException();
         }
