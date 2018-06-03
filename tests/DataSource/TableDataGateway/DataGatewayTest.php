@@ -86,12 +86,12 @@ class DataGatewayTest extends TestCase
         return $preparedStatement;
     }
 
-    private function getLoadAllRecordSet(): Traversable
+    private function getLoadAllRecordSet(): ArrayIterator
     {
         return new ArrayIterator($this->getData());
     }
 
-    private function getLoadWhereRecordSet(): Traversable
+    private function getLoadWhereRecordSet(): ArrayIterator
     {
         $data = array_filter($this->getData(), function ($row) {
             return $row['lastName'] === 'Doe';
@@ -100,7 +100,7 @@ class DataGatewayTest extends TestCase
         return new ArrayIterator($data);
     }
 
-    private function getUpdateRecord(): Traversable
+    private function getUpdateRecord(): ArrayIterator
     {
         $data = $this->getData();
         $row = reset($data);
@@ -108,7 +108,7 @@ class DataGatewayTest extends TestCase
         return new ArrayIterator([$row]);
     }
 
-    private function getData(): array
+    protected function getData(): array
     {
         return [
             ['id' => 1, 'firstName' => 'John', 'lastName' => 'Doe', 'numberOfDependents' => 2],
