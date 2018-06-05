@@ -7,6 +7,7 @@ namespace MetadataMapping\Metadata;
 use ReflectionProperty;
 use ReflectionException;
 use Exception\ApplicationException;
+use BasePatterns\LayerSupertype\DomainObject;
 
 class ColumnMap
 {
@@ -38,17 +39,32 @@ class ColumnMap
         return $this->columnName;
     }
 
+    public function setField(DomainObject $object, $value): void
+    {
+        try {
+            $this->field->setValue($object, $value);
+        } catch (ReflectionException $e) {
+            throw new ApplicationException(
+                sprintf("Error in setting %s", $this->fieldName),
+                -1,
+                $e
+            );
+        }
+    }
+
     private function initField(): void
     {
         try {
             $this->field = new ReflectionProperty(
-                $this->dataMap->getDomainClass(),
+                $this->dataMap->getDomainClass()->getName(),
                 $this->fieldName
             );
             $this->field->setAccessible(true);
         } catch (ReflectionException $e) {
             throw new ApplicationException(
-                sprintf("Unable to set up field: %s", $this->fieldName, -1, $e)
+                sprintf("Unable to set up field: %s", $this->fieldName),
+                -1,
+                $e
             );
         }
     }

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace MetadataMapping\Metadata;
 
+use ReflectionClass;
+
 class DataMap
 {
     private $domainClass;
@@ -14,11 +16,11 @@ class DataMap
 
     public function __construct(string $domainClass, string $tableName)
     {
-        $this->domainClass = $domainClass;
+        $this->domainClass = new ReflectionClass($domainClass);
         $this->tableName = $tableName;
     }
 
-    public function getDomainClass(): string
+    public function getDomainClass(): ReflectionClass
     {
         return $this->domainClass;
     }

@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace Exception;
 
-class ApplicationException
+use RuntimeException;
+
+class ApplicationException extends RuntimeException
 {
 
 }

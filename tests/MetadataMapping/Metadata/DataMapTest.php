@@ -16,6 +16,18 @@ class DataMapTest extends TestCase
         $dataMap->addColumn("firstname", "varchar", "firstName");
         $dataMap->addColumn("number_of_dependents", "int", "numberOfDependents");
 
-        var_dump($dataMap->columnList());
+        $person = $dataMap->getDomainClass()->newInstanceWithoutConstructor();
+
+        $row = [
+            'id' => 1,
+            'lastname' => 'John',
+            'firstname' => 'Doe',
+            'number_of_dependents' => 3,
+        ];
+        foreach ($dataMap->getColumnMaps() as $columnMap) {
+            $columnMap->setField($person, $row[$columnMap->getColumnName()]);
+        }
+
+        print_r($person);
     }
 }
