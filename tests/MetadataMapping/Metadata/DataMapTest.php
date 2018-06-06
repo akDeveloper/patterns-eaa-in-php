@@ -12,6 +12,7 @@ class DataMapTest extends TestCase
     public function testShouldCreateDataMap()
     {
         $dataMap = new DataMap(Person::class, "people");
+        $dataMap->addColumn("id", "int", "id");
         $dataMap->addColumn("lastname", "varchar", "lastName");
         $dataMap->addColumn("firstname", "varchar", "firstName");
         $dataMap->addColumn("number_of_dependents", "int", "numberOfDependents");
@@ -20,14 +21,17 @@ class DataMapTest extends TestCase
 
         $row = [
             'id' => 1,
-            'lastname' => 'John',
-            'firstname' => 'Doe',
+            'lastname' => 'Doe',
+            'firstname' => 'John',
             'number_of_dependents' => 3,
         ];
         foreach ($dataMap->getColumnMaps() as $columnMap) {
             $columnMap->setField($person, $row[$columnMap->getColumnName()]);
         }
 
-        print_r($person);
+        $this->assertEquals(1, $person->getId());
+        $this->assertEquals('John', $person->getFirstName());
+        $this->assertEquals('Doe', $person->getLastName());
+        $this->assertEquals(3, $person->getNumberOfDependents());
     }
 }

@@ -23,7 +23,7 @@ class QueryObject
         $this->criteria->append($criteria);
     }
 
-    private function generateWhereClause()
+    private function generateWhereClause(): string
     {
         $result = "";
         foreach ($this->criteria as $criterion) {
@@ -32,5 +32,7 @@ class QueryObject
             }
             $result .= $criterion->generateSql();
         }
+
+        return $result;
     }
 }

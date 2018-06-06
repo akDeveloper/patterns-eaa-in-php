@@ -7,6 +7,7 @@ namespace DataSource\DataMapper;
 use PDOException;
 use ArrayIterator;
 use BasePatterns\RecordSet\Row;
+use MetadataMapping\Metadata\DataMap;
 use BasePatterns\RecordSet\RecordSet;
 use Infrastructure\Database\Connection;
 use BasePatterns\LayerSupertype\DomainObject;
@@ -14,6 +15,8 @@ use BasePatterns\LayerSupertype\DomainObject;
 abstract class AbstractMapper
 {
     private $db;
+
+    private $dataMap;
 
     protected $loadedMap = [];
 
@@ -24,9 +27,16 @@ abstract class AbstractMapper
      */
     abstract protected function doLoad(int $id, array $row);
 
+    abstract protected function loadDataMap(): DataMap;
+
     public function __construct(Connection $connection)
     {
         $this->db = $connection;
+    }
+
+    public function getDataMap()
+    {
+        return $this->dataMap = $this->dataMap ?: $this->loadDataMap();
     }
 
     protected function abstractFind(int $id): DomainObject
@@ -76,7 +86,8 @@ abstract class AbstractMapper
             return $result;
         }
 
-        $result = $this->doLoad($id, $row);
+        $result = $this->getDataMap()->getDomainClass()->newInstanceWithoutConstructor();
+        $result->setId($id);
         $this->loadedMap[$id] = $result;
 
         return $result;
@@ -89,5 +100,12 @@ abstract class AbstractMapper
         }, $rs->getArrayCopy());
 
         return new ArrayIterator($result);
+    }
+
+    private function loadFields(array $row, DomainObject $result): void
+    {
+        foreach ($this->dataMap->getColumnMaps() as $columnMap) {
+            $columnMap->setField($result, $row[$columnMap->getColumnName()]);
+        }
     }
 }

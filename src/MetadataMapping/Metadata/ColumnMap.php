@@ -39,6 +39,11 @@ class ColumnMap
         return $this->columnName;
     }
 
+    public function getFieldName(): string
+    {
+        return $this->fieldName;
+    }
+
     public function setField(DomainObject $object, $value): void
     {
         try {

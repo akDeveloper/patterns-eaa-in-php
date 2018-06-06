@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace DataSource\DataMapper;
 
 use ArrayIterator;
+use MetadataMapping\Metadata\DataMap;
 
 class PersonMapper extends AbstractMapper
 {
@@ -18,6 +19,17 @@ class PersonMapper extends AbstractMapper
     public function findByLastName(string $lastName): ArrayIterator
     {
         return $this->findMany(new FindByLastName($lastName));
+    }
+
+    protected function loadDataMap(): DataMap
+    {
+        $dataMap = new DataMap(Person::class, "people");
+        $dataMap->addColumn("id", "int", "id");
+        $dataMap->addColumn("lastname", "varchar", "lastName");
+        $dataMap->addColumn("firstname", "varchar", "firstName");
+        $dataMap->addColumn("number_of_dependents", "int", "numberOfDependents");
+
+        return $dataMap;
     }
 
     protected function doLoad(int $id, array $row)

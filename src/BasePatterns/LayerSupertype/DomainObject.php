@@ -6,7 +6,7 @@ namespace BasePatterns\LayerSupertype;
 
 class DomainObject
 {
-    private $id;
+    protected $id;
 
     public function __construct(int $id)
     {
@@ -16,5 +16,10 @@ class DomainObject
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }
