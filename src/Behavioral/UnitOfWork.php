@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace Behavioral;
 
 use SplObjectStorage;
+use Infrastructure\Database\Connection;
+use DataSource\DataMapper\AbstractMapper;
 use BasePatterns\LayerSupertype\DomainObject;
 
 class UnitOfWork
@@ -15,11 +17,16 @@ class UnitOfWork
 
     private $removedObjects = [];
 
-    public function __construct()
+    private $mappers = [];
+
+    private $connection;
+
+    public function __construct(Connection $connection)
     {
         $this->newObjects = new SplObjectStorage();
         $this->dirtyObjects = new SplObjectStorage();
         $this->removedObjects = new SplObjectStorage();
+        $this->connection = $connection;
     }
 
     public function registerNew(DomainObject $object): void
@@ -49,5 +56,21 @@ class UnitOfWork
         if (!$this->removedObjects->contains($object)) {
             $this->removedObjects->attach($object);
         }
+    }
+
+    public function registerDataMapper(string $className, string $mapperClassName): void
+    {
+        $this->mappers[$className] = new $mapperClassName($this->connection);
+    }
+
+    public function getMapper(string $className): AbstractMapper
+    {
+        if (array_key_exists($className, $this->mappers)) {
+            return $this->mappers[$className];
+        }
+
+        throw new \DomainException(
+            sprintf("Unable to find mapper for class `%s`", $className)
+        );
     }
 }

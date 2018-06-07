@@ -32,16 +32,6 @@ class PersonMapper extends AbstractMapper
         return $dataMap;
     }
 
-    protected function doLoad(int $id, array $row)
-    {
-        return new Person(
-            $id,
-            $row['firstname'],
-            $row['lastname'],
-            $row['number_of_dependents']
-        );
-    }
-
     protected function findStatement(): string
     {
         return sprintf(

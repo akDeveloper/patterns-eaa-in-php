@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace MetadataMapping\Query;
 
+use MetadataMapping\Metadata\DataMap;
+
 class Criteria
 {
     private $sqlOperator;
@@ -30,5 +32,15 @@ class Criteria
         $this->sqlOperator = $sqlOperator;
         $this->field = $field;
         $this->value = $value;
+    }
+
+    public function generateSql(DataMap $dataMap)
+    {
+        return sprintf(
+            "%s%s%S",
+            $dataMap->getColumnForField($this->field),
+            $this->sqlOperator,
+            $this->value
+        );
     }
 }

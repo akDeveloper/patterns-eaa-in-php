@@ -12,10 +12,13 @@ class QueryObject
 
     private $criteria;
 
-    public function __construct(string $className)
+    private $uow;
+
+    public function __construct(string $className, UnitOfWork $uow)
     {
         $this->className = $className;
         $this->criteria = new ArrayIterator();
+        $this->uow = $uow;
     }
 
     public function addCriteria(Criteria $criteria): void
@@ -30,7 +33,7 @@ class QueryObject
             if (strlen($result) != 0) {
                 $result .= " AND ";
             }
-            $result .= $criterion->generateSql();
+            $result .= $criterion->generateSql($this->uow->getMapper($this->className)->getDataMap());
         }
 
         return $result;

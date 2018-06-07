@@ -56,4 +56,17 @@ class DataMap
 
         return " id," . implode(",", $columnNames);
     }
+
+    public function getColumnForField(string $fieldName): string
+    {
+        foreach ($this->getColumnMaps() as $columnMap) {
+            if ($columnMap->getFieldName() == $fieldName) {
+                return $columnMap->getColumnName();
+            }
+        }
+
+        throw new ApplicationException(
+            sprintf("Unable to find column for `%s`", $fieldName)
+        );
+    }
 }

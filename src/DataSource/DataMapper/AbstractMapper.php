@@ -22,11 +22,6 @@ abstract class AbstractMapper
 
     abstract protected function findStatement(): string;
 
-    /**
-     * @throws SQLException
-     */
-    abstract protected function doLoad(int $id, array $row);
-
     abstract protected function loadDataMap(): DataMap;
 
     public function __construct(Connection $connection)
@@ -37,6 +32,16 @@ abstract class AbstractMapper
     public function getDataMap()
     {
         return $this->dataMap = $this->dataMap ?: $this->loadDataMap();
+    }
+
+    public function findObjectsWhere(string $whereClause)
+    {
+        $sql = sprintf(
+            "SELECT %s FROM %s WHERE %s",
+            $this->getDataMap()->columnList(),
+            $this->getDataMap()->getTableName(),
+            $whereClause
+        );
     }
 
     protected function abstractFind(int $id): DomainObject
