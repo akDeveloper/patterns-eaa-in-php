@@ -34,7 +34,7 @@ abstract class AbstractMapper
         return $this->dataMap = $this->dataMap ?: $this->loadDataMap();
     }
 
-    public function findObjectsWhere(string $whereClause)
+    public function findObjectsWhere(string $whereClause, array $bindValues): ArrayIterator
     {
         $sql = sprintf(
             "SELECT %s FROM %s WHERE %s",
@@ -42,6 +42,18 @@ abstract class AbstractMapper
             $this->getDataMap()->getTableName(),
             $whereClause
         );
+
+        try {
+            $stmt = $this->db->prepare($sql);
+            $rs = $stmt->executeQuery($bindValues);
+            return $this->loadAll($rs);
+        } catch (PDOException $e) {
+            throw new SQLException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
     }
 
     protected function abstractFind(int $id): DomainObject
@@ -93,6 +105,7 @@ abstract class AbstractMapper
 
         $result = $this->getDataMap()->getDomainClass()->newInstanceWithoutConstructor();
         $result->setId($id);
+        $this->loadFields($row, $result);
         $this->loadedMap[$id] = $result;
 
         return $result;

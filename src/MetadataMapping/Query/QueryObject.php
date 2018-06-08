@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace MetadataMapping\Query;
 
 use ArrayIterator;
+use Behavioral\UnitOfWork;
+use MetadataMapping\Metadata\DataMap;
 
 class QueryObject
 {
@@ -12,13 +14,12 @@ class QueryObject
 
     private $criteria;
 
-    private $uow;
+    private $bindValues = [];
 
-    public function __construct(string $className, UnitOfWork $uow)
+    public function __construct(string $className)
     {
         $this->className = $className;
         $this->criteria = new ArrayIterator();
-        $this->uow = $uow;
     }
 
     public function addCriteria(Criteria $criteria): void
@@ -26,14 +27,25 @@ class QueryObject
         $this->criteria->append($criteria);
     }
 
-    private function generateWhereClause(): string
+    public function execute(UnitOfWork $uow): ArrayIterator
+    {
+        $dataMapper = $uow->getDataMapper($this->className);
+
+        return $dataMapper->findObjectsWhere(
+            $this->generateWhereClause($dataMapper->getDataMap()),
+            $this->bindValues
+        );
+    }
+
+    private function generateWhereClause(DataMap $dataMap): string
     {
         $result = "";
         foreach ($this->criteria as $criterion) {
             if (strlen($result) != 0) {
                 $result .= " AND ";
             }
-            $result .= $criterion->generateSql($this->uow->getMapper($this->className)->getDataMap());
+            $result .= $criterion->generateSql($dataMap);
+            $this->bindValues[] = $criterion->getValue();
         }
 
         return $result;

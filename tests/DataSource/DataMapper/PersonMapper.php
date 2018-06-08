@@ -24,7 +24,6 @@ class PersonMapper extends AbstractMapper
     protected function loadDataMap(): DataMap
     {
         $dataMap = new DataMap(Person::class, "people");
-        $dataMap->addColumn("id", "int", "id");
         $dataMap->addColumn("lastname", "varchar", "lastName");
         $dataMap->addColumn("firstname", "varchar", "firstName");
         $dataMap->addColumn("number_of_dependents", "int", "numberOfDependents");

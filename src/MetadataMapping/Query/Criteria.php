@@ -24,6 +24,11 @@ class Criteria
         return new self(" < ", $field, $value);
     }
 
+    public static function equalsTo(string $field, string $value): self
+    {
+        return new self(" = ", $field, $value);
+    }
+
     private function __construct(
         string $sqlOperator,
         string $field,
@@ -37,10 +42,14 @@ class Criteria
     public function generateSql(DataMap $dataMap)
     {
         return sprintf(
-            "%s%s%S",
+            "%s%s?",
             $dataMap->getColumnForField($this->field),
-            $this->sqlOperator,
-            $this->value
+            $this->sqlOperator
         );
+    }
+
+    public function getValue(): string
+    {
+        return $this->value;
     }
 }

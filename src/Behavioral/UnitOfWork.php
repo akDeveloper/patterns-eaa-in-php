@@ -63,7 +63,7 @@ class UnitOfWork
         $this->mappers[$className] = new $mapperClassName($this->connection);
     }
 
-    public function getMapper(string $className): AbstractMapper
+    public function getDataMapper(string $className): AbstractMapper
     {
         if (array_key_exists($className, $this->mappers)) {
             return $this->mappers[$className];
