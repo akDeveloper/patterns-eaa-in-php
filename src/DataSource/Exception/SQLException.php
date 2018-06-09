@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace DataSource\DataMapper;
+namespace DataSource\Exception;
 
 class SQLException extends RuntimeException
 {

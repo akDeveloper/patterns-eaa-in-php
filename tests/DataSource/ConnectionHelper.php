@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace DataSource;
 
 use ArrayIterator;
-use Infrastructure\Database\Connection;
-use Infrastructure\Database\PreparedStatement;
+use DataSource\Connection;
+use DataSource\PreparedStatement;
 
 trait ConnectionHelper
 {

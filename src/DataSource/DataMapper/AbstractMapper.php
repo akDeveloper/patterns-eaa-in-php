@@ -4,12 +4,13 @@ declare(strict_types = 1);
 
 namespace DataSource\DataMapper;
 
-use PDOException;
 use ArrayIterator;
+use DataSource\Connection;
 use BasePatterns\RecordSet\Row;
+use Exception\ApplicationException;
 use MetadataMapping\Metadata\DataMap;
 use BasePatterns\RecordSet\RecordSet;
-use Infrastructure\Database\Connection;
+use DataSource\Exception\SQLException;
 use BasePatterns\LayerSupertype\DomainObject;
 
 abstract class AbstractMapper
@@ -47,8 +48,8 @@ abstract class AbstractMapper
             $stmt = $this->db->prepare($sql);
             $rs = $stmt->executeQuery($bindValues);
             return $this->loadAll($rs);
-        } catch (PDOException $e) {
-            throw new SQLException(
+        } catch (SQLException $e) {
+            throw new ApplicationException(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
@@ -68,8 +69,8 @@ abstract class AbstractMapper
             $rs = $findStatement->executeQuery();
 
             return $this->load($rs->current());
-        } catch (PDOException $e) {
-            throw new SQLException(
+        } catch (SQLException $e) {
+            throw new ApplicationException(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
@@ -87,8 +88,8 @@ abstract class AbstractMapper
             $rs = $stmt->executeQuery();
 
             return $this->loadAll($rs);
-        } catch (PDOException $e) {
-            throw new SQLException(
+        } catch (SQLException $e) {
+            throw new ApplicationException(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e

@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Behavioral;
 
 use SplObjectStorage;
-use Infrastructure\Database\Connection;
+use DataSource\Connection;
 use DataSource\DataMapper\AbstractMapper;
 use BasePatterns\LayerSupertype\DomainObject;
 
