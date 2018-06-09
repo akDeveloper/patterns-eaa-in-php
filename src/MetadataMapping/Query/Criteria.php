@@ -24,9 +24,14 @@ class Criteria
         return new self(" < ", $field, $value);
     }
 
-    public static function equalsTo(string $field, string $value): self
+    public static function equals(string $field, string $value): self
     {
         return new self(" = ", $field, $value);
+    }
+
+    public static function matches(string $field, string $value): self
+    {
+        return new self(" LIKE ", $field, $value);
     }
 
     private function __construct(

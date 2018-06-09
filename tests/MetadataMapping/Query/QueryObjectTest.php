@@ -22,7 +22,7 @@ class QueryObjectTest extends TestCase
         $uow->registerDataMapper(Person::class, PersonMapper::class);
         $qo = new QueryObject(Person::class, $uow);
         $qo->addCriteria(
-            Criteria::equalsTo('firstName', 'John')
+            Criteria::equals('firstName', 'John')
         );
 
         $rs = $qo->execute($uow);

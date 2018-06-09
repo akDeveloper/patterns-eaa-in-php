@@ -6,6 +6,7 @@ namespace DataSource\DataMapper;
 
 use ArrayIterator;
 use DataSource\Connection;
+use Behavioral\IdentityMap;
 use BasePatterns\RecordSet\Row;
 use Exception\ApplicationException;
 use MetadataMapping\Metadata\DataMap;
@@ -59,7 +60,7 @@ abstract class AbstractMapper
 
     protected function abstractFind(int $id): DomainObject
     {
-        if ($result = $this->loadedMap[$id] ?? null) {
+        if ($result = IdentityMap::get($id, $this->getDataMap()->getDomainClass()->getName()) ?? null) {
             return $result;
         }
 
@@ -100,14 +101,14 @@ abstract class AbstractMapper
     protected function load(array $row): DomainObject
     {
         $id = $row['id'];
-        if ($result = $this->loadedMap[$id] ?? null) {
+        if ($result = IdentityMap::get($id, $this->getDataMap()->getDomainClass()->getName()) ?? null) {
             return $result;
         }
 
         $result = $this->getDataMap()->getDomainClass()->newInstanceWithoutConstructor();
         $result->setId($id);
         $this->loadFields($row, $result);
-        $this->loadedMap[$id] = $result;
+        IdentityMap::set($result);
 
         return $result;
     }

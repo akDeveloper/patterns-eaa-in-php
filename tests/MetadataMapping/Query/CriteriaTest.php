@@ -17,7 +17,7 @@ class CriteriaTest extends TestCase
         $dataMap->addColumn("firstname", "varchar", "firstName");
         $dataMap->addColumn("number_of_dependents", "int", "numberOfDependents");
 
-        $c = Criteria::equalsTo("lastName", "Doe");
+        $c = Criteria::equals("lastName", "Doe");
 
         $sql = $c->generateSql($dataMap);
 
