@@ -11,7 +11,7 @@ use Exception\ApplicationException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 
-class FrontController
+class FrontServlet
 {
     public function doGet(ServerRequest $request, Response $response): Response
     {

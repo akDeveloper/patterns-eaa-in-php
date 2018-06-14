@@ -30,6 +30,11 @@ abstract class FrontCommand
 
     protected function forward(string $target): void
     {
+        if (!file_exists($target)) {
+            throw new IOException(
+                "File `%s` does not exist."
+            );
+        }
         $level = ob_get_level();
         ob_start();
         ob_implicit_flush(0);

@@ -15,7 +15,7 @@ class ArtistHelper
         $this->artist = $artist;
     }
 
-    public function getArtistName(): string
+    public function getName(): string
     {
         return $this->artist->getName();
     }

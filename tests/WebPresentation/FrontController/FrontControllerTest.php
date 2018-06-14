@@ -15,7 +15,7 @@ class FrontControllerTest extends TestCase
     public function testShouldHandleRequest(): void
     {
         $request = ServerRequestFactory::fromGlobals(null, ['name' => 'barelyWorks', 'command' => 'Artist']);
-        $f = new FrontController();
+        $f = new FrontServlet();
         $response = $f->doGet($request, new Response());
 
         $responseBody = $response->getBody()->__toString();

@@ -1,2 +1,2 @@
 <?php $helper = $this->request->getAttribute("helper")?>
-<h1><?= $helper->getArtistName() ?></h1>
+<h1><?= $helper->getName() ?></h1>

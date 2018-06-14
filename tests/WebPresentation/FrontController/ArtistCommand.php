@@ -10,7 +10,7 @@ class ArtistCommand extends FrontCommand
 {
     public function process(): void
     {
-        $artist = Artist::findNamed($this->request->getQueryParams()['name']);
+        $artist = Artist::findNamed($this->request->getQueryParams()['name'] ?? null);
         $this->request = $this->request->withAttribute("helper", new ArtistHelper($artist));
         $this->forward(__DIR__ . "/templates/artist.php");
     }
