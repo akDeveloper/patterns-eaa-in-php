@@ -32,7 +32,7 @@ abstract class FrontCommand
     {
         if (!file_exists($target)) {
             throw new IOException(
-                "File `%s` does not exist."
+                sprintf("File `%s` does not exist.", $viewPage)
             );
         }
         $level = ob_get_level();
