@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace WebPresentation\FrontController;
 
-use Throwable;
-use Zend\Diactoros\Stream;
+use WebPresentation\Forward;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 
@@ -30,28 +29,8 @@ abstract class FrontCommand
 
     protected function forward(string $target): void
     {
-        if (!file_exists($target)) {
-            throw new IOException(
-                sprintf("File `%s` does not exist.", $viewPage)
-            );
-        }
-        $level = ob_get_level();
-        ob_start();
-        ob_implicit_flush(0);
-        try {
-            include $target;
-        } catch (Throwable $e) {
-            while (ob_get_level() > $level) {
-                ob_end_clean();
-            }
-            throw $e;
-        }
+        $f = new Forward($this->request, $this->response);
 
-        $content = ob_get_clean();
-
-        $stream = $this->response->getBody();
-        $stream->rewind();
-        $stream->write($content);
-        $this->response = $this->response->withBody($stream);
+        $this->response = $f->sendResponse($target);
     }
 }

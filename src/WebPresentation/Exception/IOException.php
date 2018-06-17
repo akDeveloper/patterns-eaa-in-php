@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace WebPresentation\FrontController;
+namespace WebPresentation\Exception;
 
 use RuntimeException;
 

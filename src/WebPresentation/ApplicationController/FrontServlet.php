@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace WebPresentation\ApplicationController;
 
-use WebPresentation\FrontController\IOException;
+use WebPresentation\Forward;
 use Psr\Http\Message\ResponseInterface as ServerResponse;
 use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 
@@ -39,31 +39,9 @@ class FrontServlet
         ServerRequest $request,
         ServerResponse $response
     ): ServerResponse {
-        if (!file_exists($viewPage)) {
-            throw new IOException(
-                sprintf("File `%s` does not exist.", $viewPage)
-            );
-        }
-        $level = ob_get_level();
-        ob_start();
-        ob_implicit_flush(0);
-        try {
-            include $viewPage;
-        } catch (Throwable $e) {
-            while (ob_get_level() > $level) {
-                ob_end_clean();
-            }
-            throw $e;
-        }
+        $f = new Forward($request, $response);
 
-        $content = ob_get_clean();
-
-        $stream = $response->getBody();
-        $stream->rewind();
-        $stream->write($content);
-        $response = $response->withBody($stream);
-
-        return $response;
+        return $f->sendResponse($viewPage);
     }
 
     private function getApplicationController(ServerRequest $request): ApplicationController
