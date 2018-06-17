@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Infrastructure\Database;
 
+use DataSource\Connection;
 use BasePatterns\RecordSet\Row;
 use BasePatterns\RecordSet\RecordSet;
 use DataSource\TableDataGateway\DataAdapter;

@@ -17,7 +17,8 @@ class FrontControllerTest extends TestCase
     {
         $request = $this->getRequest();
         $f = new FrontServlet();
-        $response = $f->doGet($request, new Response());
+        $f->doGet($request, new Response());
+        $response = $f->getResponse();
 
         $responseBody = $response->getBody()->__toString();
 

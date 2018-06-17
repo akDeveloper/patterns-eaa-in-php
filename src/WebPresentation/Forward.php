@@ -26,7 +26,7 @@ class Forward
     {
         if (!file_exists($target)) {
             throw new IOException(
-                sprintf("File `%s` does not exist.", $viewPage)
+                sprintf("File `%s` does not exist.", $target)
             );
         }
         $level = ob_get_level();

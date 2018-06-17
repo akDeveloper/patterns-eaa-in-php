@@ -6,7 +6,7 @@ namespace WebPresentation\FrontController;
 
 class UnknownCommand extends FrontCommand
 {
-    public function process()
+    public function process(): void
     {
         $this->forward("/unknown.php");
     }

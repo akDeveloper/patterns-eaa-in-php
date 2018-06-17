@@ -38,7 +38,7 @@ class UnitOfWork
     {
         if (!$this->removedObjects->contains($object)
             && !$this->dirtyObjects->contains($object)
-            && !$this->newObjects->contains($objects)
+            && !$this->newObjects->contains($object)
         ) {
             $this->dirtyObjects->attach($object);
         }

@@ -6,16 +6,15 @@ namespace DataSource\TableDataGateway;
 
 use Traversable;
 use ArrayIterator;
+use DataSource\Connection;
 use PHPUnit\Framework\TestCase;
 use BasePatterns\RecordSet\Row;
-use Infrastructure\Database\Connection;
-use Infrastructure\Database\PreparedStatement;
+use DataSource\ConnectionHelper;
+use DataSource\PreparedStatement;
 
 class DataGatewayTest extends TestCase
 {
-    private $connection;
-
-    private $statement;
+    use ConnectionHelper;
 
     public function testShouldLoadAll()
     {
@@ -58,37 +57,6 @@ class DataGatewayTest extends TestCase
         $person->numberOfDependents = 10;
 
         $personGateway->update();
-    }
-
-    private function getMockConnection(Traversable $expectedResults): Connection
-    {
-        $this->connection = $this->getMockBuilder(Connection::class)
-            ->setMethods(['prepare'])
-            ->getMock();
-
-        $this->statement = $this->getMockPreparedStatement($expectedResults);
-        $this->connection
-            ->method('prepare')
-            ->willReturn($this->statement);
-
-        return $this->connection;
-    }
-
-    private function getMockPreparedStatement(Traversable $expectedResults): PreparedStatement
-    {
-        $preparedStatement = $this->getMockBuilder(PreparedStatement::class)
-            ->setMethods(['bindValue', 'executeQuery', 'execute'])
-            ->getMock();
-
-        $preparedStatement->method('executeQuery')
-            ->willReturn($expectedResults);
-
-        return $preparedStatement;
-    }
-
-    private function getLoadAllRecordSet(): ArrayIterator
-    {
-        return new ArrayIterator($this->getData());
     }
 
     private function getLoadWhereRecordSet(): ArrayIterator

@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace DataSource\TableDataGateway;
 
 use ArrayAccess;
+use DataSource\Connection;
 use BasePatterns\RecordSet\Row;
 use BasePatterns\RecordSet\Table;
 use BasePatterns\RecordSet\RecordSet;
-use Infrastructure\Database\Connection;
 
 abstract class DataGateway implements ArrayAccess
 {

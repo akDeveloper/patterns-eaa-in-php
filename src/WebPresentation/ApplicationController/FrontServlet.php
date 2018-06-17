@@ -10,7 +10,9 @@ use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 
 class FrontServlet
 {
-    public function service(ServerRequest $request, ServerResponse $response): ServerResponse
+    private $response;
+
+    public function service(ServerRequest $request, ServerResponse $response): void
     {
         $params = $this->getParameterMap($request);
         $appController = $this->getApplicationController($request);
@@ -23,7 +25,12 @@ class FrontServlet
             $appController->getView($commandString, $params)
         );
 
-        return $this->forward($viewPage, $request, $response);
+        $this->response = $this->forward($viewPage, $request, $response);
+    }
+
+    public function getResponse(): ServerResponse
+    {
+        return $this->response;
     }
 
     protected function getParameterMap(ServerRequest $request): array

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace MetadataMapping\Metadata;
 
 use ReflectionClass;
+use Exception\ApplicationException;
 
 class DataMap
 {

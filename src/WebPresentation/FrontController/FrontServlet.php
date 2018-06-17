@@ -13,13 +13,15 @@ use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 
 class FrontServlet
 {
-    public function doGet(ServerRequest $request, Response $response): Response
+    private $response;
+
+    public function doGet(ServerRequest $request, Response $response): void
     {
         $command = $this->getCommand($request);
         $command->init($request, $response);
         $command->process();
 
-        return $command->getResponse();
+        $this->response = $command->getResponse();
     }
 
     private function getCommand(ServerRequest $request): FrontCommand
@@ -43,5 +45,10 @@ class FrontServlet
         }
 
         return $result;
+    }
+
+    public function getResponse(): Response
+    {
+        return $this->response;
     }
 }

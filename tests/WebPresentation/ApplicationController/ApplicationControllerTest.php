@@ -15,7 +15,8 @@ class ApplicationControllerTest extends TestCase
     {
         $request = $this->getReturnRequest();
         $f = new FrontServlet();
-        $response = $f->service($request, new Response());
+        $f->service($request, new Response());
+        $response = $f->getResponse();
 
         $this->assertEquals("<h1>Return</h1>\n", $response->getBody()->__toString());
     }
@@ -24,7 +25,8 @@ class ApplicationControllerTest extends TestCase
     {
         $request = $this->getDamageRequest();
         $f = new FrontServlet();
-        $response = $f->service($request, new Response());
+        $f->service($request, new Response());
+        $response = $f->getResponse();
 
         $this->assertEquals("<h1>Lease Damage</h1>\n", $response->getBody()->__toString());
     }

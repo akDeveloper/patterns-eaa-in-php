@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace DataSource\TableDataGateway;
 
+use DataSource\Connection;
 use BasePatterns\RecordSet\RecordSet;
-use Infrastructure\Database\Connection;
 use Infrastructure\Database\DbDataAdapter;
 
 class DataSetHolder

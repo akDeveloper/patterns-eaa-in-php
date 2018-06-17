@@ -32,7 +32,7 @@ class IdentityMap
         return null;
     }
 
-    public function set(DomainObject $object): void
+    public static function set(DomainObject $object): void
     {
         self::$data[get_class($object)][$object->getId()] = $object;
     }
