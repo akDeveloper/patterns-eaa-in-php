@@ -20,8 +20,6 @@ abstract class AbstractMapper
 
     private $dataMap;
 
-    protected $loadedMap = [];
-
     abstract protected function findStatement(): string;
 
     abstract protected function loadDataMap(): DataMap;

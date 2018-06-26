@@ -4,18 +4,18 @@ declare(strict_types = 1);
 
 namespace Model;
 
-class Artist
+use BasePatterns\LayerSupertype\DomainObject;
+
+class Artist extends DomainObject
 {
     private $name;
 
     public static function findNamed(string $name): self
     {
-        return new self($name);
-    }
+        $artist = new self(1);
+        $artist->name = $name;
 
-    public function __construct(string $name)
-    {
-        $this->name = $name;
+        return $artist;
     }
 
     public function getName(): string
