@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace WebPresentation;
 
 use Throwable;
-use Zend\Diactoros\Stream;
 use WebPresentation\Exception\IOException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as ServerRequest;

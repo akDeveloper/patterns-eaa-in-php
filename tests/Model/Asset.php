@@ -10,7 +10,7 @@ class Asset
 
     private $status = AssetStatus::ON_LEASE;
 
-    public function find(string $id): self
+    public static function find(string $id): self
     {
         return new self($id);
     }
