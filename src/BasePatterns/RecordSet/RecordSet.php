@@ -15,7 +15,7 @@ class RecordSet implements Countable
 
     public function getTable(string $tableName): Table
     {
-        if (array_key_exists($tableName, $this->tables) == false) {
+        if (array_key_exists($tableName, $this->tables) === false) {
             throw new NoTableFoundException($tableName);
         }
 

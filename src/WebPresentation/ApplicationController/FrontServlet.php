@@ -16,7 +16,7 @@ class FrontServlet
     {
         $params = $this->getParameterMap($request);
         $appController = $this->getApplicationController($request);
-        $commandString = $params["command"] ?? null;
+        $commandString = $params["command"] ?? '';
         $domainCommand = $appController->getDomainCommand($commandString, $params);
         $domainCommand->run($params);
 

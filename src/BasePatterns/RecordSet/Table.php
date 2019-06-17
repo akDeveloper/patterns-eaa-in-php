@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace BasePatterns\RecordSet;
 
-use Infrastructure\Database\PreparedStatement;
-
 class Table
 {
     private $tableName;
