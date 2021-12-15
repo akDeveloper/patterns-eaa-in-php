@@ -8,15 +8,15 @@ use BasePatterns\LayerSupertype\DomainObject;
 
 class IdentityMap
 {
-    private static $data = [];
+    private static array $data = [];
 
     public static function contains(int $id, string $className): bool
     {
-        if (!array_key_exists($className, self::$data)) {
+        if (!\array_key_exists($className, self::$data)) {
             return false;
         }
 
-        if (!array_key_exists($id, self::$data[$className])) {
+        if (!\array_key_exists($id, self::$data[$className])) {
             return false;
         }
 

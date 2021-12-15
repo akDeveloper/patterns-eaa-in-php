@@ -10,9 +10,9 @@ use Exception\ApplicationException;
 
 class Response
 {
-    private $domainCommand;
+    private ReflectionClass $domainCommand;
 
-    private $viewUrl;
+    private string $viewUrl;
 
     public function __construct(string $domainCommand, string $viewUrl)
     {

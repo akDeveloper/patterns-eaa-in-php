@@ -6,7 +6,7 @@ namespace BasePatterns\LayerSupertype;
 
 class DomainObject
 {
-    protected $id;
+    protected int $id;
 
     public function __construct(int $id)
     {

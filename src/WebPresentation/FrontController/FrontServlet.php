@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 
 class FrontServlet
 {
-    private $response;
+    private ?Response $response = null;
 
     public function doGet(ServerRequest $request, Response $response): void
     {

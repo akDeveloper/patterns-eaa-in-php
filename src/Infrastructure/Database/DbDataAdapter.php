@@ -11,9 +11,9 @@ use DataSource\TableDataGateway\DataAdapter;
 
 class DbDataAdapter implements DataAdapter
 {
-    private $query;
+    private string $query;
 
-    private $connection;
+    private Connection $connection;
 
     public function __construct(string $query, Connection $connection)
     {
@@ -54,7 +54,7 @@ class DbDataAdapter implements DataAdapter
             ->execute($binds);
     }
 
-    private function createSqlForUpdate(string $tableName, array $changes)
+    private function createSqlForUpdate(string $tableName, array $changes): array
     {
         $sqlArray = [];
         $binds = [];

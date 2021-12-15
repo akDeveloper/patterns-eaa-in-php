@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace WebPresentation\FrontController;
 
-use Zend\Diactoros\Response;
+use Laminas\Diactoros\Response;
 use PHPUnit\Framework\TestCase;
-use Zend\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\ServerRequestFactory;
 use Psr\Http\Message\ServerRequestInterface;
 
 class FrontControllerTest extends TestCase

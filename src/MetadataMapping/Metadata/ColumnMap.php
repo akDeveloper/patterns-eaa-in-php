@@ -11,15 +11,15 @@ use BasePatterns\LayerSupertype\DomainObject;
 
 class ColumnMap
 {
-    private $columnName;
+    private string $columnName;
 
-    private $fieldName;
+    private string $fieldName;
 
-    private $type;
+    private string $type;
 
-    private $dataMap;
+    private DataMap $dataMap;
 
-    private $field;
+    private ReflectionProperty $field;
 
     public function __construct(
         string $columnName,
@@ -42,6 +42,11 @@ class ColumnMap
     public function getFieldName(): string
     {
         return $this->fieldName;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     public function setField(DomainObject $object, $value): void

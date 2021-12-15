@@ -10,9 +10,9 @@ use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 
 abstract class FrontCommand
 {
-    protected $request;
+    protected ?ServerRequest $request = null;
 
-    protected $response;
+    protected ?Response $response = null;
 
     abstract public function process(): void;
 

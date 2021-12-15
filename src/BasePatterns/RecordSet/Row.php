@@ -8,9 +8,9 @@ use InvalidArgumentException;
 
 class Row
 {
-    private $row;
+    private array $row;
 
-    private $changes = [];
+    private array $changes = [];
 
     public function __construct(array $row)
     {
@@ -25,7 +25,7 @@ class Row
 
     public function exists(string $column): bool
     {
-        return array_key_exists($column, $this->row);
+        return \array_key_exists($column, $this->row);
     }
 
     public function __get(string $name)
@@ -50,7 +50,7 @@ class Row
         }
 
         throw new InvalidArgumentException(
-            sprintf("Column with name `%s` does not exist.", $name)
+            \sprintf("Column with name `%s` does not exist.", $name)
         );
     }
 

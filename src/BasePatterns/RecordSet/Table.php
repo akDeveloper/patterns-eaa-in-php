@@ -6,11 +6,11 @@ namespace BasePatterns\RecordSet;
 
 class Table
 {
-    private $tableName;
+    private string $tableName;
 
-    private $rows = [];
+    private array $rows = [];
 
-    private $columns = [];
+    private array $columns = [];
 
     public function __construct(string $tableName)
     {
@@ -19,6 +19,7 @@ class Table
 
     public function select(string $filter): array
     {
+        return [];
     }
 
     public function getRows(): array

@@ -9,13 +9,13 @@ use Traversable;
 
 class RecordSet implements Countable
 {
-    private $tables = [];
+    private array $tables = [];
 
-    private $count = 0;
+    private int $count = 0;
 
     public function getTable(string $tableName): Table
     {
-        if (array_key_exists($tableName, $this->tables) === false) {
+        if (\array_key_exists($tableName, $this->tables) === false) {
             throw new NoTableFoundException($tableName);
         }
 
@@ -30,7 +30,7 @@ class RecordSet implements Countable
             $rows[] = new Row($row);
         }
         $this->tables[$tableName]->load($rows);
-        $this->count += count($rows);
+        $this->count += \count($rows);
     }
 
     public function count(): int

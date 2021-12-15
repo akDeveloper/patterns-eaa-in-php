@@ -12,15 +12,15 @@ use BasePatterns\RecordSet\RecordSet;
 
 abstract class DataGateway implements ArrayAccess
 {
+    /**
+     * @var DataSetHolder
+     */
     public $holder;
-
-    private $connection;
 
     abstract public function getTableName(): string;
 
     public function __construct(Connection $connection)
     {
-        $this->connection = $connection;
         $this->holder = new DataSetHolder($connection);
     }
 

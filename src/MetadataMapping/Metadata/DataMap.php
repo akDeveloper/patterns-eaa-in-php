@@ -9,11 +9,11 @@ use Exception\ApplicationException;
 
 class DataMap
 {
-    private $domainClass;
+    private ReflectionClass $domainClass;
 
-    private $tableName;
+    private string $tableName;
 
-    private $columnMaps = [];
+    private array $columnMaps = [];
 
     public function __construct(string $domainClass, string $tableName)
     {

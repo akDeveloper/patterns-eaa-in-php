@@ -9,16 +9,16 @@ use DataSource\Connection;
 use Behavioral\IdentityMap;
 use BasePatterns\RecordSet\Row;
 use Exception\ApplicationException;
-use MetadataMapping\Metadata\DataMap;
 use BasePatterns\RecordSet\RecordSet;
+use MetadataMapping\Metadata\DataMap;
 use DataSource\Exception\SQLException;
 use BasePatterns\LayerSupertype\DomainObject;
 
 abstract class AbstractMapper
 {
-    private $db;
+    private Connection $db;
 
-    private $dataMap;
+    private ?DataMap $dataMap = null;
 
     abstract protected function findStatement(): string;
 
@@ -113,9 +113,7 @@ abstract class AbstractMapper
 
     protected function loadAll(ArrayIterator $rs): ArrayIterator
     {
-        $result = array_map(function (array $row) {
-            return $this->load($row);
-        }, $rs->getArrayCopy());
+        $result = \array_map([$this, 'load'], $rs->getArrayCopy());
 
         return new ArrayIterator($result);
     }

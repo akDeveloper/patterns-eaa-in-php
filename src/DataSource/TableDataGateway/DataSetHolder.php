@@ -10,14 +10,11 @@ use Infrastructure\Database\DbDataAdapter;
 
 class DataSetHolder
 {
-    /**
-     * @var \BasePatterns\RecordSet\RecordSet
-     */
-    public $data;
+    public RecordSet $data;
 
-    private $dataAdapters = [];
+    private array $dataAdapters = [];
 
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

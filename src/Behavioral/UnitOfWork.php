@@ -11,15 +11,15 @@ use BasePatterns\LayerSupertype\DomainObject;
 
 class UnitOfWork
 {
-    private $newObjects = [];
+    private SplObjectStorage $newObjects;
 
-    private $dirtyObjects = [];
+    private SplObjectStorage $dirtyObjects;
 
-    private $removedObjects = [];
+    private SplObjectStorage $removedObjects;
 
-    private $mappers = [];
+    private array $mappers = [];
 
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -65,12 +65,12 @@ class UnitOfWork
 
     public function getDataMapper(string $className): AbstractMapper
     {
-        if (array_key_exists($className, $this->mappers)) {
+        if (\array_key_exists($className, $this->mappers)) {
             return $this->mappers[$className];
         }
 
         throw new \DomainException(
-            sprintf("Unable to find mapper for class `%s`", $className)
+            \sprintf("Unable to find mapper for class `%s`", $className)
         );
     }
 }

@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 
 class FrontServlet
 {
-    private $response;
+    private ?ServerResponse $response = null;
 
     public function service(ServerRequest $request, ServerResponse $response): void
     {

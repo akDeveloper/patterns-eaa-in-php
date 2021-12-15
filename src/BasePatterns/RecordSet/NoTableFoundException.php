@@ -11,7 +11,7 @@ class NoTableFoundException extends RuntimeException
     public function __construct(string $tableName)
     {
         parent::__construct(
-            sprintf('Table `%s` not found', $tableName)
+            \sprintf('Table `%s` not found', $tableName)
         );
     }
 }

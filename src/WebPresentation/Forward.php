@@ -11,9 +11,9 @@ use Psr\Http\Message\ServerRequestInterface as ServerRequest;
 
 class Forward
 {
-    private $request;
+    private ServerRequest $request;
 
-    private $response;
+    private Response $response;
 
     public function __construct(ServerRequest $request, Response $response)
     {
@@ -23,24 +23,24 @@ class Forward
 
     public function sendResponse(string $target): Response
     {
-        if (!file_exists($target)) {
+        if (!\file_exists($target)) {
             throw new IOException(
-                sprintf("File `%s` does not exist.", $target)
+                \sprintf("File `%s` does not exist.", $target)
             );
         }
-        $level = ob_get_level();
-        ob_start();
-        ob_implicit_flush(0);
+        $level = \ob_get_level();
+        \ob_start();
+        \ob_implicit_flush(0);
         try {
             include $target;
         } catch (Throwable $e) {
-            while (ob_get_level() > $level) {
-                ob_end_clean();
+            while (\ob_get_level() > $level) {
+                \ob_end_clean();
             }
             throw $e;
         }
 
-        $content = ob_get_clean();
+        $content = \ob_get_clean();
 
         $stream = $this->response->getBody();
         $stream->rewind();
