@@ -19,7 +19,7 @@ trait ConnectionHelper
     protected function getMockConnection(ArrayIterator $expectedResults): Connection
     {
         $this->connection = $this->getMockBuilder(Connection::class)
-            ->setMethods(['prepare'])
+            ->onlyMethods(['prepare'])
             ->getMock();
 
         $this->statement = $this->getMockPreparedStatement($expectedResults);
@@ -33,7 +33,7 @@ trait ConnectionHelper
     protected function getMockPreparedStatement(ArrayIterator $expectedResults): PreparedStatement
     {
         $preparedStatement = $this->getMockBuilder(PreparedStatement::class)
-            ->setMethods(['bindValue', 'executeQuery', 'execute'])
+            ->onlyMethods(['bindValue', 'executeQuery', 'execute'])
             ->getMock();
 
         $preparedStatement->method('executeQuery')
